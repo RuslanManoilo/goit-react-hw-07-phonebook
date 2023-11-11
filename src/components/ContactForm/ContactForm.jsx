@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from "redux/contactsSlice";
+import { addContact } from "redux/operations";
+import { getContacts } from "redux/selectors";
+
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
@@ -8,14 +10,14 @@ import { ErrorNotification, FormBtn, FormInput, FormLabel, FormWrapper } from "c
 
 export const ContactForm = () => {
 
-    const contacts = useSelector(state => state.contacts);
+    const contacts = useSelector(getContacts);
     const dispatch = useDispatch();
 
     return (
         <Formik
             initialValues={{
                 name: '',
-                number: '',
+                phone: '',
             }}
 
             validationSchema={formSchema}
@@ -39,13 +41,13 @@ export const ContactForm = () => {
                 />
                 <ErrorNotification name="name" component="div" />
 
-                <FormLabel htmlFor="contactFormikNumber">Number</FormLabel>
+                <FormLabel htmlFor="contactFormikPhone">Phone</FormLabel>
                 <FormInput
-                    name="number"
-                    id="contactFormikNumber"
+                    name="phone"
+                    id="contactFormikPhone"
                     type="tel"
                 />
-                <ErrorNotification name="number" component="div" />
+                <ErrorNotification name="phone" component="div" />
 
                 <FormBtn type="submit">Add contact</FormBtn>
             </FormWrapper>
@@ -57,7 +59,7 @@ const formSchema = Yup.object().shape({
     name: Yup.string()
         .min(2, 'Too Short!')
         .required('This field is required!'),
-    number: Yup.string()
+    phone: Yup.string()
         .min(4, 'Too Short!')
         .required('This field is required!'),
 });
