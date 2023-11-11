@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchContacts } from "redux/operations";
 
 import { ContactForm } from "./ContactForm/ContactForm";
@@ -9,10 +9,14 @@ import { Container, SecondTitle, Title } from "./GlobalStyle";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { selectError, selectIsLoading } from "redux/selectors";
+import { Loader } from "./Loader/Loader";
 
 
 export const App = () => {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -27,6 +31,8 @@ export const App = () => {
       <SecondTitle>Contacts</SecondTitle>
       <Filter />
       <ContactList />
+
+      {isLoading && !error && <Loader />}
     </Container>
   );
 };
